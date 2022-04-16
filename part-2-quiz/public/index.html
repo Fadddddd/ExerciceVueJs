@@ -1,4 +1,4 @@
-daside<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -19,29 +19,36 @@ daside<!DOCTYPE html>
 
       <section class="menu">
         <h2>Menu</h2>
-         <div v-for="item in simpleMenu" :key="item.name" class="menu-item">
+        <div v-for="item in simpleMenu" :key="item.name" class="menu-item">
           <img
-          class="menu-item__image"
-          :src="item.image.source"
-          :alt="item.image.alt"
+            class="menu-item__image"
+            :src="item.image.source"
+            :alt="item.image.alt"
           />
-        </div>
-            <h3>{{item.name}}</h3>
+          <div>
+            <h3>{{ item.name }}</h3>
             <p v-if="item.inStock">En stock</p>
-            <p>En rupture de stock</p>
+            <p v-else>En rupture de stock</p>
             <div>
-              <label for="add-item-quantity">Quantité :</label>
-              <input id="add-item-quantity" type="number" />
-              <button>Ajouter au panier d'achat</button>
+              <label for="add-item-quantity"
+                >Quantité : {{ item.quantity }}</label
+              >
+              <input
+                v-model.number="item.quantity"
+                id="add-item-quantity"
+                type="number"
+              />
+              <button @click="addToShoppingCart(item.quantity)">
+                Ajouter au panier
+              </button>
             </div>
           </div>
         </div>
       </section>
 
       <aside class="shopping-cart">
-        <h2>Panier d'achat: 0 articles</h2>
-       
-        </aside>
+        <h2>Panier d'achat : {{ shoppingCart }} articles</h2>
+      </aside>
 
       <h2>Contactez nous</h2>
       <p>Adresse : {{ address }}</p>
@@ -53,9 +60,8 @@ daside<!DOCTYPE html>
         <li>Samedi: 07:00 à 14:00</li>
         <li>Dimanche: 07:00 à 12:00</li>
       </ul>
-
       <footer class="footer">
-        <p>Copyright {{ restaurantName }} 2020</p>
+        <p>{{ copyright }}</p>
       </footer>
     </div>
 
@@ -68,11 +74,12 @@ daside<!DOCTYPE html>
           email: "hello@cafewithavue.bakery",
           phone: "01 88 88 88 88",
           restaurantName: "La belle vue",
+          shoppingCart: 0,
           simpleMenu: [
             {
               name: "Croissant",
               image: {
-                source: "./assets/croissant.jpg",
+                source: "./images/croissant.jpg",
                 alt: "Un croissant",
               },
               inStock: true,
@@ -81,7 +88,7 @@ daside<!DOCTYPE html>
             {
               name: "Baguette de pain",
               image: {
-                source: "./assets/baguette.jpg",
+                source: "./images/french-baguette.jpeg",
                 alt: "Quatre baguettes de pain",
               },
               inStock: true,
@@ -90,7 +97,7 @@ daside<!DOCTYPE html>
             {
               name: "Éclair",
               image: {
-                source: "./assets/eclair.jpg",
+                source: "./images/eclair.jpg",
                 alt: "Éclair au chocolat",
               },
               inStock: false,
@@ -103,6 +110,11 @@ daside<!DOCTYPE html>
             const currentYear = new Date().getFullYear();
 
             return `Copyright ${this.restaurantName} ${currentYear}`;
+          },
+        },
+        methods: {
+          addToShoppingCart(amount) {
+            this.shoppingCart += amount;
           },
         },
       });
