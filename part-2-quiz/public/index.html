@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+daside<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -17,10 +17,36 @@
         est difficile de s'arrêter.
       </p>
 
+      <section class="menu">
+        <h2>Menu</h2>
+         <div v-for="item in simpleMenu" :key="item.name" class="menu-item">
+          <img
+          class="menu-item__image"
+          :src="item.image.source"
+          :alt="item.image.alt"
+          />
+        </div>
+            <h3>{{item.name}}</h3>
+            <p v-if="item.inStock">En stock</p>
+            <p>En rupture de stock</p>
+            <div>
+              <label for="add-item-quantity">Quantité :</label>
+              <input id="add-item-quantity" type="number" />
+              <button>Ajouter au panier d'achat</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="shopping-cart">
+        <h2>Panier d'achat: 0 articles</h2>
+       
+        </aside>
+
       <h2>Contactez nous</h2>
-      <p>Adresse: {{adresse}}</p>
-      <p>Téléphone : {{numero}}</p>
-      <p>Email: {{email}}</p>
+      <p>Adresse : {{ address }}</p>
+      <p>Téléphone : {{ phone }}</p>
+      <p>Email : {{ email }}</p>
       <p>Horaires :</p>
       <ul>
         <li>L-V: 06:00 à 16:00</li>
@@ -29,7 +55,7 @@
       </ul>
 
       <footer class="footer">
-        <p>Copyright {{ restaurantName }} 2019</p>
+        <p>Copyright {{ restaurantName }} 2020</p>
       </footer>
     </div>
 
@@ -38,10 +64,46 @@
       const app = new Vue({
         el: "#app",
         data: {
-          restaurantName: "Café avec vue",
-          numero: "01 88 88 88 88",
+          address: "18 avenue du Beurre, Paris, France",
           email: "hello@cafewithavue.bakery",
-          adresse: "18 avenue du Beurre, Paris, France",
+          phone: "01 88 88 88 88",
+          restaurantName: "La belle vue",
+          simpleMenu: [
+            {
+              name: "Croissant",
+              image: {
+                source: "./assets/croissant.jpg",
+                alt: "Un croissant",
+              },
+              inStock: true,
+              quantity: 1,
+            },
+            {
+              name: "Baguette de pain",
+              image: {
+                source: "./assets/baguette.jpg",
+                alt: "Quatre baguettes de pain",
+              },
+              inStock: true,
+              quantity: 1,
+            },
+            {
+              name: "Éclair",
+              image: {
+                source: "./assets/eclair.jpg",
+                alt: "Éclair au chocolat",
+              },
+              inStock: false,
+              quantity: 1,
+            },
+          ],
+        },
+        computed: {
+          copyright() {
+            const currentYear = new Date().getFullYear();
+
+            return `Copyright ${this.restaurantName} ${currentYear}`;
+          },
         },
       });
     </script>
